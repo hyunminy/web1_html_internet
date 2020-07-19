@@ -89,7 +89,7 @@ var app = http.createServer(function (request, response) {
         `
       );
       response.writeHead(200);
-      response.end(template);
+      response.end(success);
     });
   } else {
     response.writeHead(404);
