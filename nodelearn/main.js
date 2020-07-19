@@ -1,6 +1,7 @@
 var http = require("http");
 var fs = require("fs");
 var url = require("url");
+var qs = require("querystring");
 
 function templateHTML(title, list, body) {
   return `
@@ -21,13 +22,11 @@ function templateHTML(title, list, body) {
 }
 function templateList(filelist) {
   var list = "<ul>";
-
   var i = 0;
   while (i < filelist.length) {
     list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
     i = i + 1;
   }
-
   list = list + "</ul>";
   return list;
 }
@@ -36,11 +35,10 @@ var app = http.createServer(function (request, response) {
   var _url = request.url;
   var queryData = url.parse(_url, true).query;
   var pathname = url.parse(_url, true).pathname;
-  console.log(pathname);
   if (pathname === "/") {
     if (queryData.id === undefined) {
       fs.readdir("./data", function (error, filelist) {
-        var title = "welcome";
+        var title = "Welcome";
         var description = "Hello, Node.js";
         var list = templateList(filelist);
         var template = templateHTML(
@@ -77,23 +75,36 @@ var app = http.createServer(function (request, response) {
         title,
         list,
         `
-        <form action="http://localhost:3000/process_create" method="post">
-  <p><input type="text" name="title" placeholder="title"/></p>
-  <p>
-    <textarea name="description" placeholder="description"></textarea>
-  </p>
-  <p>
-    <input type="submit" />
-  </p>
-</form>
+          <form action="http://localhost:3000/create_process" method="post">
+            <p><input type="text" name="title" placeholder="title"></p>
+            <p>
+              <textarea name="description" placeholder="description"></textarea>
+            </p>
+            <p>
+              <input type="submit">
+            </p>
+          </form>
         `
       );
       response.writeHead(200);
       response.end(template);
     });
+  } else if (pathname === "/create_process") {
+    var body = "";
+    request.on("data", function (data) {
+      body = body + data;
+    });
+    request.on("end", function () {
+      var post = qs.parse(body);
+      var title = post.title;
+      var description = post.description;
+      console.log(post.title);
+    });
+    response.writeHead(200);
+    response.end("success");
   } else {
     response.writeHead(404);
-    response.end("sorry not found");
+    response.end("Sorry not found");
   }
 });
 app.listen(3000);
