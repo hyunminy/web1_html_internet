@@ -169,7 +169,7 @@ var app = http.createServer(function (request, response) {
     });
   } else {
     response.writeHead(404);
-    response.end("sorry not found hello");
+    response.end("sorry not found");
   }
 });
 app.listen(3000);
