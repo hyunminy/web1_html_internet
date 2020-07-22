@@ -4,7 +4,7 @@ var url = require("url");
 var qs = require("querystring");
 
 var template = {
-  html: function (title, list, body, control) {
+  HTML: function (title, list, body, control) {
     return `
     <!doctype html>
     <html>
@@ -146,7 +146,7 @@ var app = http.createServer(function (request, response) {
       fs.readFile(`data/${queryData.id}`, "utf8", function (err, description) {
         var title = queryData.id;
         var list = template.list(filelist);
-        var template = template.HTML(
+        var html = template.HTML(
           title,
           list,
           `
