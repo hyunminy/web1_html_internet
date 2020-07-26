@@ -12,7 +12,7 @@ var app = http.createServer(function (request, response) {
   var pathname = url.parse(_url, true).pathname;
   if (pathname === "/") {
     if (queryData.id === undefined) {
-      fs.readdir("./data", function (error, filelist) {
+      fs.readdir("../data", function (error, filelist) {
         var title = "Welcome";
         var description = "Hello, Node.js";
         var list = template.list(filelist);
@@ -26,7 +26,7 @@ var app = http.createServer(function (request, response) {
         response.end(html);
       });
     } else {
-      fs.readdir("./data", function (error, filelist) {
+      fs.readdir("../data", function (error, filelist) {
         var filteredId = path.parse(queryData.id).base;
         fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
           var title = queryData.id;
@@ -89,7 +89,7 @@ var app = http.createServer(function (request, response) {
       });
     });
   } else if (pathname === "/update") {
-    fs.readdir("./data", function (error, filelist) {
+    fs.readdir("../data", function (error, filelist) {
       var filteredId = path.parse(queryData.id).base;
       fs.readFile(`data/${filteredId}`, "utf8", function (err, description) {
         var title = queryData.id;
