@@ -4,7 +4,7 @@ module.exports = {
       <!doctype html>
       <html>
       <head>
-        <title>WEB1 - ${title}</title>
+        <title>WEBew - ${title}</title>
         <meta charset="utf-8">
       </head>
       <body>
